@@ -1,12 +1,12 @@
 const jwt=require('jsonwebtoken');
 const User = require('../models/User');
-// require('dotenv').config()
+require('dotenv').config()
 
 // protect routes
 const requireAuth=(req,res,next)=>{
     const token =req.cookies.jwt;
     if(token){
-        jwt.verify(token,'secretkey',(err,decodedToken)=>{
+        jwt.verify(token,process.env.SECRET_KEY,(err,decodedToken)=>{
             if(err){
                 console.log(err)
                 res.redirect('/login')
@@ -24,7 +24,7 @@ const requireAuth=(req,res,next)=>{
 const currentUser = (req, res, next) => {
     const token = req.cookies.jwt;
     if (token) {
-      jwt.verify(token, 'secretkey', async (err, decodedToken) => {
+      jwt.verify(token, process.env.SECRET_KEY, async (err, decodedToken) => {
         if (err) {
           res.locals.loggedUser = null;
           next();
